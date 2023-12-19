@@ -1,113 +1,156 @@
-import Image from 'next/image'
+"use client"
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import * as THREE from "three"
+import { useRef, useState } from "react"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { Image, ScrollControls, Scroll, useScroll } from "@react-three/drei"
+import { proxy, useSnapshot } from "valtio"
+import { easing } from "maath"
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+const material = new THREE.LineBasicMaterial({ color: "white" })
+const geometry = new THREE.BufferGeometry().setFromPoints([
+	new THREE.Vector3(0, -0.5, 0),
+	new THREE.Vector3(0, 0.5, 0),
+])
+const state = proxy({
+	clicked: null as number | null,
+	urls: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 5, 7, 8, 2, 4, 9, 6].map(
+		(u) => `/${u}.jpg`
+	),
+})
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+function Minimap() {
+	const ref = useRef<THREE.Group>(null)
+	const scroll = useScroll()
+	const { urls } = useSnapshot(state)
+	const { height } = useThree((state) => state.viewport)
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+	useFrame((state, delta) => {
+		if (!ref.current) return
+		ref.current.children.forEach((child, index) => {
+			// Give me a value between 0 and 1
+			//   starting at the position of my item
+			//   ranging across 4 / total length
+			//   make it a sine, so the value goes from 0 to 1 to 0.
+			const y = scroll.curve(
+				index / urls.length - 1.5 / urls.length,
+				4 / urls.length
+			)
+			easing.damp(child.scale, "y", 0.15 + y / 6, 0.15, delta)
+		})
+	})
+	return (
+		<group ref={ref}>
+			{urls.map((_, i) => (
+				<line
+					key={i}
+					geometry={geometry}
+					material={material}
+					position={[i * 0.06 - urls.length * 0.03, -height / 2 + 0.6, 0]}
+				/>
+			))}
+		</group>
+	)
 }
+
+type ItemProps = {
+	index: number
+	position: [number, number, number]
+	scale: [number, number, number]
+	c?: THREE.Color
+}
+
+function Item({
+	index,
+	position,
+	scale,
+	c = new THREE.Color(),
+	...props
+}: ItemProps) {
+	const ref = useRef<THREE.Mesh>(null)
+	const scroll = useScroll()
+	const { clicked, urls } = useSnapshot(state)
+	const [hovered, hover] = useState(false)
+	const click = () => (state.clicked = index === clicked ? null : index)
+	const over = () => hover(true)
+	const out = () => hover(false)
+
+	useFrame((state, delta) => {
+		if (!ref.current) return
+
+		const y = scroll.curve(
+			index / urls.length - 1.5 / urls.length,
+			4 / urls.length
+		)
+		easing.damp3(
+			ref.current.scale,
+			[clicked === index ? 4.7 : scale[0], clicked === index ? 5 : 4 + y, 1],
+			0.15,
+			delta
+		)
+		ref.current.material.scale[0] = ref.current.scale.x
+		ref.current.material.scale[1] = ref.current.scale.y
+		if (clicked !== null && index < clicked)
+			easing.damp(ref.current.position, "x", position[0] - 2, 0.15, delta)
+		if (clicked !== null && index > clicked)
+			easing.damp(ref.current.position, "x", position[0] + 2, 0.15, delta)
+		if (clicked === null || clicked === index)
+			easing.damp(ref.current.position, "x", position[0], 0.15, delta)
+		easing.damp(
+			ref.current.material,
+			"grayscale",
+			hovered || clicked === index ? 0 : Math.max(0, 1 - y),
+			0.15,
+			delta
+		)
+		easing.dampC(
+			ref.current.material.color,
+			hovered || clicked === index ? "white" : "#aaa",
+			hovered ? 0.3 : 0.15,
+			delta
+		)
+	})
+	return (
+		<Image
+			ref={ref}
+			{...props}
+			position={position}
+			scale={scale}
+			onClick={click}
+			onPointerOver={over}
+			onPointerOut={out}
+		/>
+	)
+}
+
+function Items({ w = 0.7, gap = 0.15 }) {
+	const { urls } = useSnapshot(state)
+	const { width } = useThree((state) => state.viewport)
+	const xW = w + gap
+	return (
+		<ScrollControls
+			horizontal
+			damping={0.1}
+			pages={(width - xW + urls.length * xW) / width}
+		>
+			<Minimap />
+			<Scroll>
+				{
+					urls.map((url, i) => <Item key={i} index={i} position={[i * xW, 0, 0]} scale={[w, 4, 1]} url={url} />) /* prettier-ignore */
+				}
+			</Scroll>
+		</ScrollControls>
+	)
+}
+
+const page = () => (
+	<Canvas
+		gl={{ antialias: false }}
+		dpr={[1, 1.5]}
+		onPointerMissed={() => (state.clicked = null)}
+	>
+		<Items />
+	</Canvas>
+)
+
+export default page
