@@ -1,5 +1,8 @@
 "use client"
 
+// Code from
+// https://codesandbox.io/p/sandbox/horizontal-tiles-l4klb?file=%2Fsrc%2FApp.js%3A38%2C1
+
 import * as THREE from "three"
 import { useRef, useState } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
