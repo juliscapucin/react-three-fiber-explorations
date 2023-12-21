@@ -13,16 +13,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 function Overlay() {
 	return (
-		<div
-			style={{
-				position: "absolute",
-				top: 0,
-				left: 0,
-				pointerEvents: "none",
-				width: "100%",
-				height: "100%",
-			}}
-		>
+		<div className='absolute top-0 left-0 z-50 w-full h-full pointer-events-none'>
 			<a
 				href='https://pmnd.rs/'
 				style={{ position: "absolute", bottom: 40, left: 90, fontSize: "13px" }}
