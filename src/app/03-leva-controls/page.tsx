@@ -2,7 +2,6 @@
 
 import { Canvas } from "@react-three/fiber"
 import Scene from "./scene"
-import { Perf } from "r3f-perf"
 
 const page = () => {
 	return (
@@ -13,8 +12,6 @@ const page = () => {
 				dpr={[1, 1.5]}
 			>
 				<Scene />
-				{/* Performance monitor */}
-				<Perf />
 			</Canvas>
 		</section>
 	)

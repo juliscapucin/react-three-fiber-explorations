@@ -1,10 +1,8 @@
-import { Suspense, use } from "react"
+import { Suspense } from "react"
 import { useGLTF } from "@react-three/drei"
 
 export default function ModelDrei() {
 	const model = useGLTF("/models/christmas-tree.gltf")
-
-	console.log(model)
 
 	return (
 		// ToDo: fix this
