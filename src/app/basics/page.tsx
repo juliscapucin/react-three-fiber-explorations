@@ -10,7 +10,7 @@ const page = () => {
 	// }
 
 	return (
-		<section className='h-3/4 bg-slate-950'>
+		<section className='h-5/6 bg-slate-950'>
 			<Canvas
 				camera={{ fov: 45, near: 0.01, far: 1000, position: [0, 0, 100] }}
 				gl={{ antialias: false, alpha: true }}

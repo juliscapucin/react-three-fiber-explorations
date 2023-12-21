@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { useFrame, useThree, useLoader } from "@react-three/fiber"
 import { useRef } from "react"
 import { OrbitControls } from "@react-three/drei"
-import { CustomGeometry } from "@/components"
+import { CustomGeometry, Particles } from "@/components"
 
 export default function Scene() {
 	const cubeRef = useRef<THREE.Mesh>(null)
@@ -28,6 +28,7 @@ export default function Scene() {
 		<>
 			<OrbitControls args={[camera, gl.domElement]} />
 			<CustomGeometry />
+			<Particles />
 			<group position={[0, 0, -5]}>
 				<mesh ref={sphereRef} position={[3, 0, 0]}>
 					<sphereGeometry />
