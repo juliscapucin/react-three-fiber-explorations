@@ -7,6 +7,7 @@ import ModelLeva from "./model-leva"
 import OrbitControl from "./orbitControl"
 import Particles from "./particles"
 import Plane from "./plane"
+import PresentationControl from "./presentationControl"
 
 export {
 	CameraControl,
@@ -18,4 +19,5 @@ export {
 	OrbitControl,
 	Particles,
 	Plane,
+	PresentationControl,
 }
