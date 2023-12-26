@@ -8,11 +8,11 @@ const page = () => {
 		<section className='h-full bg-slate-950'>
 			<Canvas
 				shadows
-				camera={{ fov: 15, near: 0.01, far: 1000, position: [0, 10, 20] }}
+				camera={{ fov: 15, near: 0.01, far: 1000, position: [0, 10, 200] }}
 				gl={{ alpha: true }}
 				dpr={[1, 1.5]}
 			>
-				<axesHelper args={[5]} />
+				{/* <axesHelper args={[5]} /> */}
 				<Scene />
 			</Canvas>
 		</section>

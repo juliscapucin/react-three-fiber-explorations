@@ -8,6 +8,7 @@ import OrbitControl from "./orbitControl"
 import Particles from "./particles"
 import Plane from "./plane"
 import PresentationControl from "./presentationControl"
+import ScrollControl from "./scrollControl"
 
 export {
 	CameraControl,
@@ -20,4 +21,5 @@ export {
 	Particles,
 	Plane,
 	PresentationControl,
+	ScrollControl,
 }

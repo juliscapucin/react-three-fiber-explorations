@@ -35,7 +35,7 @@ function Overlay() {
 					fontSize: "13px",
 				}}
 			>
-				10/17/2021
+				10/17/2024
 			</div>
 		</div>
 	)
@@ -49,7 +49,8 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				{children} <Overlay />
+				{children}
+				{/* <Overlay /> */}
 			</body>
 		</html>
 	)

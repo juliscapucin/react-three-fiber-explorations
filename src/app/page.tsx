@@ -73,10 +73,10 @@ function Item({
 	const ref = useRef<THREE.Mesh>(null)
 	const scroll = useScroll()
 	const { clicked, urls } = useSnapshot(state)
-	const [hovered, hover] = useState(false)
+	const [hovered, setHovered] = useState(false)
 	const click = () => (state.clicked = index === clicked ? null : index)
-	const over = () => hover(true)
-	const out = () => hover(false)
+	const over = () => setHovered(true)
+	const out = () => setHovered(false)
 
 	useFrame((state, delta) => {
 		if (!ref.current) return
