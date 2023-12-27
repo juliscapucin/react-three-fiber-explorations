@@ -1,17 +1,11 @@
-import {
-	CameraControl,
-	OrbitControl,
-	PresentationControl,
-	ScrollControl,
-} from "@/components"
+import { CameraControl, OrbitControl, PresentationControl } from "@/components"
 
 export default function Scene() {
 	return (
 		<>
 			{/* <CameraControl /> */}
 			{/* <OrbitControl /> */}
-			{/* <PresentationControl /> */}
-			<ScrollControl />
+			<PresentationControl />
 		</>
 	)
 }

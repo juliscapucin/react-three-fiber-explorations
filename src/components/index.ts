@@ -10,6 +10,7 @@ import Particles from "./particles"
 import Plane from "./plane"
 import PresentationControl from "./presentationControl"
 import ScrollControl from "./scrollControl"
+import TransformControl from "./transformControl"
 
 export {
 	CameraControl,
@@ -24,4 +25,5 @@ export {
 	Plane,
 	PresentationControl,
 	ScrollControl,
+	TransformControl,
 }
