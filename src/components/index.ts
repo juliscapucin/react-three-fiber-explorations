@@ -1,5 +1,6 @@
 import CameraControl from "./cameraControl"
 import CustomGeometry from "./customGeometry"
+import Images from "./images"
 import Loader from "./loader"
 import Model from "./model"
 import ModelDrei from "./model-drei"
@@ -13,6 +14,7 @@ import ScrollControl from "./scrollControl"
 export {
 	CameraControl,
 	CustomGeometry,
+	Images,
 	Loader,
 	Model,
 	ModelDrei,

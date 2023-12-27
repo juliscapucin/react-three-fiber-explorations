@@ -8,7 +8,7 @@ const page = () => {
 		<section className='h-full bg-slate-950'>
 			<Canvas
 				shadows
-				camera={{ fov: 15, near: 0.01, far: 1000, position: [0, 10, 200] }}
+				camera={{ fov: 75, near: 0.01, far: 1000, position: [0, 0, 5] }}
 				gl={{ alpha: true }}
 				dpr={[1, 1.5]}
 			>
