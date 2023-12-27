@@ -3,6 +3,7 @@
 // import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import Link from "next/link"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,10 +23,22 @@ function Overlay() {
 				<br />
 				dev collective
 			</a>
-			<div
-				style={{ position: "absolute", top: 40, left: 40, fontSize: "13px" }}
-			>
-				bad —
+			<div className='absolute top-0 left-0 z-50 flex flex-col pointer-events-auto'>
+				<Link href={"/01-basics"}>01. Basics</Link>
+				<Link href={"/02-model"}>02. Model</Link>
+				<Link href={"/03-leva-controls"}>03. Leva Controls</Link>
+				<Link href={"/04-events-light-shadow"}>
+					04. Events / Light / Shadow
+				</Link>
+				<Link href={"/05-sparkles"}>05. Sparkles</Link>
+				<Link href={"/06-camera"}>06. Camera</Link>
+				<Link href={"/07-scroll-control"}>07. Scroll Control</Link>
+				<Link href={"/08-transform-control"}>08. Transform Control</Link>
+				<Link href={"/09-pivot-control"}>09. Pivot Control</Link>
+				<Link href={"/10-text"}>10. Text</Link>
+				<Link href={"/11-html"}>11. Html</Link>
+				<Link href={"/12-shaders"}>12. Shaders</Link>
+				<Link href={"/13-lerp"}>13. Lerp</Link>
 			</div>
 			<div
 				style={{
@@ -50,7 +63,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={inter.className}>
 				{children}
-				{/* <Overlay /> */}
+				<Overlay />
 			</body>
 		</html>
 	)

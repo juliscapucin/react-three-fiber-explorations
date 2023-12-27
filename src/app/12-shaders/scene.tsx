@@ -11,25 +11,6 @@ import {
 } from "@react-three/drei"
 
 export default function Scene() {
-	const cubeRef = useRef(null)
-	const gradientPlaneRef = useRef<THREE.Mesh>(null)
-	const [hovered, setHovered] = useState(false)
-
-	useCursor(hovered)
-
-	useEffect(() => {
-		if (!gradientPlaneRef.current) return
-
-		const mesh = gradientPlaneRef.current
-		if (!mesh.material || !("distort" in mesh.material)) return
-
-		if (hovered) {
-			mesh.material.distort = 0.6
-		} else {
-			mesh.material.distort = 0
-		}
-	}, [hovered])
-
 	return (
 		<>
 			<OrbitControls />
@@ -42,12 +23,7 @@ export default function Scene() {
 			</mesh>
 
 			{/* Gradient Plane */}
-			<mesh
-				ref={gradientPlaneRef}
-				onPointerOver={() => setHovered(true)}
-				onPointerOut={() => setHovered(false)}
-				position={[4, 0, 0]}
-			>
+			<mesh position={[4, 0, 0]}>
 				<planeGeometry args={[1, 3, 32, 32]} />
 				<MeshDistortMaterial>
 					<GradientTexture
@@ -85,7 +61,7 @@ export default function Scene() {
 					side={THREE.DoubleSide}
 				/>
 			</mesh>
-			<mesh ref={cubeRef}>
+			<mesh>
 				<boxGeometry />
 				<meshBasicMaterial color='hotpink' />
 			</mesh>
