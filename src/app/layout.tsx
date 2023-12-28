@@ -1,11 +1,24 @@
 "use client"
 
 // import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 import "./globals.css"
 import Link from "next/link"
 
-const inter = Inter({ subsets: ["latin"] })
+// Load custom font //
+const font = localFont({
+	variable: "--font-primary",
+	src: [
+		{
+			path: "../../public/fonts/PPSupplySans-Regular.otf",
+			weight: "400",
+		},
+		{
+			path: "../../public/fonts/PPSupplySans-Ultralight.otf",
+			weight: "200",
+		},
+	],
+})
 
 // export const metadata: Metadata = {
 // 	title: "Create Next App",
@@ -16,14 +29,14 @@ function Overlay() {
 	return (
 		<div className='absolute top-0 left-0 z-50 w-full h-full pointer-events-none'>
 			<a
-				href='https://pmnd.rs/'
-				style={{ position: "absolute", bottom: 40, left: 90, fontSize: "13px" }}
+				href='https://juliscapucin.com/'
+				className='absolute left-8 bottom-8 bg-colorBlack'
 			>
-				pmnd.rs
+				Juli Scapucin
 				<br />
-				dev collective
+				Creative Developer
 			</a>
-			<div className='absolute top-0 left-0 z-50 flex flex-col pointer-events-auto'>
+			<div className='absolute top-8 left-8 z-50 flex flex-col items-start pointer-events-auto [&>a]:bg-colorBlack'>
 				<Link href={"/01-basics"}>01. Basics</Link>
 				<Link href={"/02-model"}>02. Model</Link>
 				<Link href={"/03-leva-controls"}>03. Leva Controls</Link>
@@ -39,16 +52,10 @@ function Overlay() {
 				<Link href={"/11-html"}>11. Html</Link>
 				<Link href={"/12-shaders"}>12. Shaders</Link>
 				<Link href={"/13-lerp"}>13. Lerp</Link>
+				<Link href={"/14-ascii"}>14. Ascii</Link>
 			</div>
-			<div
-				style={{
-					position: "absolute",
-					bottom: 40,
-					right: 40,
-					fontSize: "13px",
-				}}
-			>
-				10/17/2024
+			<div className='absolute bottom-8 right-8 bg-colorBlack'>
+				December 2023
 			</div>
 		</div>
 	)
@@ -61,7 +68,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
+			<body
+				className={`${font.className} font-light text-colorGreen bg-colorBlack`}
+			>
 				{children}
 				<Overlay />
 			</body>
