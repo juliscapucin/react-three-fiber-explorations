@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react"
-import * as THREE from "three"
 import { MeshDistortMaterial, AsciiRenderer } from "@react-three/drei"
 
 export default function Scene() {
@@ -9,7 +7,7 @@ export default function Scene() {
 			<directionalLight position={[10, 10, 5]} intensity={3} castShadow />
 
 			<mesh castShadow>
-				<sphereGeometry args={[2, 2, 32, 32]} />
+				<sphereGeometry args={[3, 2, 32, 32]} />
 				<MeshDistortMaterial
 					color='red'
 					speed={1}

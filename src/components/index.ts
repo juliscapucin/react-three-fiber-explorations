@@ -2,6 +2,7 @@ import CameraControl from "./cameraControl"
 import CustomGeometry from "./customGeometry"
 import Images from "./images"
 import Loader from "./loader"
+import Menu from "./menu"
 import Model from "./model"
 import ModelDrei from "./model-drei"
 import ModelLeva from "./model-leva"
@@ -18,6 +19,7 @@ export {
 	CustomGeometry,
 	Images,
 	Loader,
+	Menu,
 	Model,
 	ModelDrei,
 	ModelLeva,
