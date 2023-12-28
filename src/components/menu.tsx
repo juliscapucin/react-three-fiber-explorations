@@ -16,6 +16,7 @@ const menu = [
 	{ name: "12. Shaders", path: "/12-shaders" },
 	{ name: "13. Lerp", path: "/13-lerp" },
 	{ name: "14. Ascii", path: "/14-ascii" },
+	{ name: "15. Look at Mouse", path: "/15-look-at-mouse" },
 ]
 
 export default function Menu() {

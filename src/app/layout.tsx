@@ -28,13 +28,10 @@ const font = localFont({
 function Overlay() {
 	return (
 		<div className='absolute top-0 left-0 z-50 w-full h-full pointer-events-none'>
-			<a
-				href='https://juliscapucin.com/'
-				className='absolute left-8 bottom-8 bg-colorBlack'
-			>
-				Juli Scapucin
+			<a href='https://juliscapucin.com/' className='absolute left-8 bottom-8'>
+				<span className='bg-colorBlack'>Juli Scapucin</span>
 				<br />
-				Creative Developer
+				<span className='bg-colorBlack'>Creative Developer</span>
 			</a>
 			<Menu />
 			<div className='absolute bottom-8 right-8 bg-colorBlack'>

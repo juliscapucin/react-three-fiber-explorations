@@ -1,5 +1,6 @@
 import CameraControl from "./cameraControl"
 import CustomGeometry from "./customGeometry"
+import FollowMouseCube from "./followMouseCube"
 import Images from "./images"
 import Loader from "./loader"
 import Menu from "./menu"
@@ -17,6 +18,7 @@ import TransformControl from "./transformControl"
 export {
 	CameraControl,
 	CustomGeometry,
+	FollowMouseCube,
 	Images,
 	Loader,
 	Menu,
