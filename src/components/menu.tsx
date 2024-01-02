@@ -17,6 +17,10 @@ const menu = [
 	{ name: "13. Lerp", path: "/13-lerp" },
 	{ name: "14. Ascii", path: "/14-ascii" },
 	{ name: "15. Look at Mouse", path: "/15-look-at-mouse" },
+	{ name: "16. Custom Geometry", path: "/16-custom-geometry" },
+	{ name: "17. Mask", path: "/17-mask" },
+	{ name: "18. Post Processing", path: "/18-post-processing" },
+	{ name: "19. Custom Post Processing", path: "/19-custom-post-processing" },
 ]
 
 export default function Menu() {
@@ -27,6 +31,7 @@ export default function Menu() {
 			{menu.map(({ name, path }) => (
 				<Link
 					href={path}
+					key={path}
 					className={`px-1 h-6 ${
 						pathname === path
 							? "bg-colorGreen text-colorBlack"

@@ -15,8 +15,12 @@ export default function Scene() {
 			<ambientLight intensity={0.5} />
 			<directionalLight position={[10, 10, 5]} intensity={3} castShadow />
 
-			{cubes.map(({ position, color }) => (
-				<FollowMouseCube position={position} color={color} />
+			{cubes.map(({ position, color }, index) => (
+				<FollowMouseCube
+					key={`follow-mouse-cube-${index}`}
+					position={position}
+					color={color}
+				/>
 			))}
 		</>
 	)
