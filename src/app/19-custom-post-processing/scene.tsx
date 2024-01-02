@@ -1,29 +1,41 @@
 import * as THREE from "three"
 import { useRef, useMemo } from "react"
-import { useFrame, createPortal, extend } from "@react-three/fiber"
+import { useFrame, createPortal, extend, useThree } from "@react-three/fiber"
 import { useFBO, PerspectiveCamera, shaderMaterial } from "@react-three/drei"
 import glsl from "glslify"
 
 function TextureScene() {
-	const mesh = useRef<THREE.Mesh>(null)
+	const groupRef = useRef<THREE.Group>(null)
 	useFrame(() => {
-		if (!mesh.current) return
+		if (!groupRef.current) return
 
-		mesh.current.rotation.x =
-			mesh.current.rotation.y =
-			mesh.current.rotation.z +=
+		groupRef.current.rotation.x =
+			groupRef.current.rotation.y =
+			groupRef.current.rotation.z +=
 				0.01
 	})
 	return (
-		<mesh ref={mesh}>
-			<boxGeometry />
-			<meshNormalMaterial />
-		</mesh>
+		<group ref={groupRef}>
+			<mesh>
+				<boxGeometry args={[5, 5]} />
+				<meshNormalMaterial />
+			</mesh>
+			<mesh>
+				<boxGeometry args={[5, 5]} />
+				<meshNormalMaterial />
+			</mesh>
+			<mesh>
+				<boxGeometry args={[5, 5]} />
+				<meshNormalMaterial />
+			</mesh>
+		</group>
 	)
 }
 
 const WaveShaderMaterial = shaderMaterial(
+	// uniforms
 	{ uTime: 0, uTexture: new THREE.Texture() },
+	// vertex shader
 	glsl`
 	  varying vec2 vUv;
 	  void main() {
@@ -31,6 +43,7 @@ const WaveShaderMaterial = shaderMaterial(
 		 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 	  }
 	`,
+	// fragment shader
 	glsl`
 	  precision mediump float;
 	  uniform float uTime;
@@ -40,8 +53,10 @@ const WaveShaderMaterial = shaderMaterial(
 	  varying vec2 vUv;
  
 	  void main() {
-		 vec3 texture = texture2D(uTexture, vUv).rgb;
-		 gl_FragColor = vec4(texture, 1.0);
+		vec3 textureColor = texture2D(uTexture, vUv).rgb;
+		vec3 color = vec3(vUv, 1.0);
+		color = texture2D(uTexture, vUv + vec2(sin(uTime + vUv.x * 15.0) * 0.2, sin(uTime + vUv.y * 15.0) * 0.02)).rgb;
+		gl_FragColor = vec4(color, 1.0); // Set the fragment's color
 	  }
 	`
 )
@@ -58,14 +73,24 @@ type SceneProps = {
 const Scene = ({ multisample, samples, stencilBuffer, format }: SceneProps) => {
 	const target = useFBO({ samples, stencilBuffer, format })
 	const camRef = useRef<THREE.PerspectiveCamera | null>(null)
+	const shaderRef = useRef(null)
+
+	const { size } = useThree() // Get size from React Three Fiber
+
+	const aspectRatio = size.width / size.height
+	const planeHeight = 10 // You can set the plane height
+	const planeWidth = planeHeight * aspectRatio // Width based on aspect ratio
+
+	const cameraZPosition = planeHeight / 2 / Math.tan(Math.PI / 8) // Adjust based on FOV (here assumed to be 45 deg)
+
 	const scene = useMemo(() => {
 		const scene = new THREE.Scene()
-		scene.background = new THREE.Color()
+		// scene.background = new THREE.Color()
 		return scene
 	}, [])
 
 	useFrame((state) => {
-		if (!camRef.current) return
+		if (!camRef.current || !shaderRef.current) return
 
 		camRef.current.position.z =
 			5 + Math.sin(state.clock.getElapsedTime() * 1.5) * 2
@@ -74,13 +99,18 @@ const Scene = ({ multisample, samples, stencilBuffer, format }: SceneProps) => {
 		state.gl.setRenderTarget(null)
 	})
 
+	useFrame(({ clock }) => {
+		if (!shaderRef.current) return
+		shaderRef.current.uTime = clock.getElapsedTime()
+	})
+
 	return (
 		<>
-			<PerspectiveCamera ref={camRef} position={[0, 0, 3]} />
+			<PerspectiveCamera ref={camRef} position={[0, 0, 1]} />
 			{createPortal(<TextureScene />, scene)}
 			<mesh>
-				<planeGeometry args={[2, 2]} />
-				<waveShaderMaterial ref={shader} uTexture={target.texture} />
+				<planeGeometry args={[planeWidth, planeHeight]} />
+				<waveShaderMaterial ref={shaderRef} uTexture={target.texture} />
 			</mesh>
 		</>
 	)
