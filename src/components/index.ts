@@ -5,6 +5,7 @@ import FollowMouseCube from "./followMouseCube"
 import Images from "./images"
 import Loader from "./loader"
 import Menu from "./menu"
+import MenuDev from "./menu-dev"
 import Model from "./model"
 import ModelDrei from "./model-drei"
 import ModelLeva from "./model-leva"
@@ -26,6 +27,7 @@ export {
 	Images,
 	Loader,
 	Menu,
+	MenuDev,
 	Model,
 	ModelDrei,
 	ModelLeva,

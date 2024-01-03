@@ -1,6 +1,6 @@
 import * as THREE from "three"
 import { useRef, useState } from "react"
-import { Canvas, extend, useFrame } from "@react-three/fiber"
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber"
 import { useTexture, shaderMaterial } from "@react-three/drei"
 
 export const ImageFadeMaterial = shaderMaterial(
@@ -40,33 +40,60 @@ export const ImageFadeMaterial = shaderMaterial(
 extend({ ImageFadeMaterial })
 
 export default function Scene() {
+	const { viewport } = useThree()
 	const ref = useRef()
+	const refBg = useRef()
 	const [texture1, texture2, dispTexture] = useTexture([
-		"/1.jpg",
-		"/6.jpg",
-		"/displacement/13.jpg",
+		"/pixelated@paulina_milde_jachowska-01.avif",
+		"/pixelated@paulina_milde_jachowska-02.avif",
+		"/displacement/15.jpg",
 	])
 	const [hovered, setHover] = useState(false)
 	useFrame(() => {
+		if (!ref.current || !refBg.current) return
 		ref.current.dispFactor = THREE.MathUtils.lerp(
+			ref.current.dispFactor,
+			hovered ? 1 : 0,
+			0.075
+		)
+		refBg.current.dispFactor = THREE.MathUtils.lerp(
 			ref.current.dispFactor,
 			hovered ? 1 : 0,
 			0.075
 		)
 	})
 	return (
-		<mesh
-			onPointerOver={(e) => setHover(true)}
-			onPointerOut={(e) => setHover(false)}
-		>
-			<planeGeometry />
-			<imageFadeMaterial
-				ref={ref}
-				tex={texture1}
-				tex2={texture2}
-				disp={dispTexture}
-				toneMapped={false}
-			/>
-		</mesh>
+		<>
+			<mesh
+				scale={[viewport.width, viewport.height, 1]}
+				position={[0, 0, 0]}
+				onPointerOver={(e) => setHover(true)}
+				onPointerOut={(e) => setHover(false)}
+			>
+				<planeGeometry />
+				<imageFadeMaterial
+					ref={refBg}
+					tex={texture2}
+					tex2={texture1}
+					disp={dispTexture}
+					toneMapped={false}
+				/>
+			</mesh>
+			<mesh
+				scale={[viewport.width * 0.4, viewport.height * 0.6, 1]}
+				position={[0, 0, 0]}
+				onPointerOver={(e) => setHover(true)}
+				onPointerOut={(e) => setHover(false)}
+			>
+				<planeGeometry />
+				<imageFadeMaterial
+					ref={ref}
+					tex={texture1}
+					tex2={texture2}
+					disp={dispTexture}
+					toneMapped={false}
+				/>
+			</mesh>
+		</>
 	)
 }

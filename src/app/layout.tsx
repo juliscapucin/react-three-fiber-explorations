@@ -3,7 +3,7 @@
 // import type { Metadata } from "next"
 import localFont from "next/font/local"
 import "./globals.css"
-import { Menu } from "@/components"
+import { Menu, MenuDev } from "@/components"
 
 // Load custom font //
 const font = localFont({
@@ -33,7 +33,8 @@ function Overlay() {
 				<br />
 				<span className='bg-colorBlack'>Creative Developer</span>
 			</a>
-			<Menu />
+			{/* <Menu /> */}
+			<MenuDev />
 			<div className='absolute bottom-8 right-8 bg-colorBlack'>
 				December 2023
 			</div>
