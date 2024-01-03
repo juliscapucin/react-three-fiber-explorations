@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import * as THREE from "three"
-import { useFrame, useLoader } from "@react-three/fiber"
+import { useFrame, useLoader, useThree } from "@react-three/fiber"
 const { lerp } = THREE.MathUtils
 
 export default function Scene() {
@@ -10,11 +10,14 @@ export default function Scene() {
 	)
 	const mask = useLoader(THREE.TextureLoader, "/mask.jpg")
 	const groupRef = useRef<THREE.Group>(null)
+	const groupRef2 = useRef<THREE.Group>(null)
 
-	useFrame(({ mouse, viewport }) => {
+	const { viewport } = useThree()
+
+	useFrame((state) => {
 		if (!groupRef.current) return
-		const x = mouse.x * viewport.width * 0.02
-		const y = mouse.y * viewport.height * 0.02
+		const x = state.pointer.x * viewport.width * 0.02
+		const y = state.pointer.y * viewport.height * 0.02
 		// groupRef.current.rotation.x = y
 		// groupRef.current.rotation.y = -x
 

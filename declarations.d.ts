@@ -8,6 +8,14 @@ declare global {
 				uTexture: THREE.Texture
 				// Add other uniforms as props here
 			}
+			curtainMaterial: {
+				ref?: React.MutableRefObject<any>
+				uTexture: THREE.Texture
+				key: any
+				resolution: any
+				uProgress: number
+				uAlpha: number
+			}
 		}
 	}
 }

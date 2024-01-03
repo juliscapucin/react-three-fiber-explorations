@@ -1,15 +1,22 @@
-import { useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { useFrame, useLoader, useThree } from "@react-three/fiber"
-import { WaveMaterial } from "./WaveMaterial"
+import { CurtainMaterial } from "./CurtainMaterial"
 import { easing } from "maath"
 import * as THREE from "three"
 
+import gsap from "gsap"
+
 export default function Scene() {
 	const ref = useRef()
-	const { viewport, size } = useThree()
+	const ref2 = useRef()
+	const { viewport, size, camera } = useThree()
 	const texture = useLoader(
 		THREE.TextureLoader,
-		"/textures/owl-@erik_karits.avif"
+		"/textures/texture-@tyu25.avif"
+	)
+	const texture2 = useLoader(
+		THREE.TextureLoader,
+		"/textures/stripes-@mrparalloid.avif"
 	)
 
 	useFrame((state, delta) => {
@@ -19,22 +26,42 @@ export default function Scene() {
 
 		ref.current.time += delta
 		easing.damp3(ref.current.pointer, state.pointer, 0.2, delta)
-		console.log(ref.current.uProgress)
-		console.log(state.pointer)
-		ref.current.uProgress = x
 	})
 
+	useLayoutEffect(() => {
+		if (!ref.current) return
+
+		const tl = gsap.timeline({ repeat: -1, yoyo: true })
+
+		tl.to(ref.current.uniforms.uProgress, {
+			value: 0.6,
+			duration: 3,
+			ease: "power2.inOut",
+		}).to(
+			ref.current.uniforms.uAlpha,
+			{
+				value: 0.0,
+				duration: 3,
+				ease: "power2.inOut",
+			},
+			"<"
+		)
+	}, [ref])
+
 	return (
-		<mesh scale={[viewport.width, viewport.height, 1]}>
-			<planeGeometry />
-			{/* <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> */}
-			<waveMaterial
-				ref={ref}
-				key={WaveMaterial.key}
-				resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
-				uTexture={texture}
-				uProgress={0}
-			/>
-		</mesh>
+		<>
+			<mesh scale={[viewport.width, viewport.height, 1]} position={[0, 0, 0]}>
+				<planeGeometry />
+				<curtainMaterial
+					ref={ref}
+					key={CurtainMaterial.key}
+					resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
+					uTexture={texture}
+					uProgress={0}
+					uAlpha={1}
+					transparent
+				/>
+			</mesh>
+		</>
 	)
 }
