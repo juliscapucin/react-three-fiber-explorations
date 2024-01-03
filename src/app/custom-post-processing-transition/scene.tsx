@@ -1,7 +1,7 @@
 import * as THREE from "three"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Canvas, extend, useFrame, useThree } from "@react-three/fiber"
-import { useTexture, shaderMaterial } from "@react-three/drei"
+import { useTexture, shaderMaterial, useCursor } from "@react-three/drei"
 
 export const ImageFadeMaterial = shaderMaterial(
 	{
@@ -23,6 +23,7 @@ export const ImageFadeMaterial = shaderMaterial(
     uniform float _rot;
     uniform float dispFactor;
     uniform float effectFactor;
+
     void main() {
       vec2 uv = vUv;
       vec4 disp = texture2D(disp, uv);
@@ -30,6 +31,7 @@ export const ImageFadeMaterial = shaderMaterial(
       vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (disp.r*effectFactor), uv.y);
       vec4 _texture = texture2D(tex, distortedPosition);
       vec4 _texture2 = texture2D(tex2, distortedPosition2);
+		
       vec4 finalTexture = mix(_texture, _texture2, dispFactor);
       gl_FragColor = finalTexture;
       #include <tonemapping_fragment>
@@ -48,7 +50,49 @@ export default function Scene() {
 		"/pixelated@paulina_milde_jachowska-02.avif",
 		"/displacement/15.jpg",
 	])
+
 	const [hovered, setHover] = useState(false)
+	useCursor(hovered ? true : false)
+
+	const makeGrayscale = (texture) => {
+		const width = texture.image.width
+		const height = texture.image.height
+
+		const canvas = document.createElement("canvas")
+		canvas.width = width
+		canvas.height = height
+
+		const ctx = canvas.getContext("2d")
+		ctx.drawImage(texture.image, 0, 0, width, height)
+
+		const imageData = ctx.getImageData(0, 0, width, height)
+		const data = imageData.data
+
+		for (let i = 0; i < data.length; i += 4) {
+			const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
+			data[i] = avg // red
+			data[i + 1] = avg // green
+			data[i + 2] = avg // blue
+		}
+
+		ctx.putImageData(imageData, 0, 0)
+		return new THREE.Texture(canvas)
+	}
+
+	useEffect(() => {
+		if (texture1 && texture2) {
+			const textures = [texture1, texture2]
+			const grayTextures = textures.map((texture) => {
+				const grayTexture = makeGrayscale(texture)
+				grayTexture.needsUpdate = true
+				return grayTexture
+			})
+
+			refBg.current.tex = grayTextures[0]
+			refBg.current.tex2 = grayTextures[1]
+		}
+	}, [texture1, texture2])
+
 	useFrame(() => {
 		if (!ref.current || !refBg.current) return
 		ref.current.dispFactor = THREE.MathUtils.lerp(
@@ -73,8 +117,8 @@ export default function Scene() {
 				<planeGeometry />
 				<imageFadeMaterial
 					ref={refBg}
-					tex={texture2}
-					tex2={texture1}
+					tex={texture1}
+					tex2={texture2}
 					disp={dispTexture}
 					toneMapped={false}
 				/>
@@ -88,8 +132,8 @@ export default function Scene() {
 				<planeGeometry />
 				<imageFadeMaterial
 					ref={ref}
-					tex={texture1}
-					tex2={texture2}
+					tex={texture2}
+					tex2={texture1}
 					disp={dispTexture}
 					toneMapped={false}
 				/>
