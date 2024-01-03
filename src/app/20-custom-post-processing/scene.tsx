@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 import { useFrame, useLoader, useThree } from "@react-three/fiber"
 import { CurtainMaterial } from "./CurtainMaterial"
 import { easing } from "maath"
@@ -6,47 +6,55 @@ import * as THREE from "three"
 
 import gsap from "gsap"
 
+const textures = [
+	"/textures/texture-@fakurian-01.avif",
+	"/textures/texture-@phillbrown-01.avif",
+	"/textures/architecture-@andersjilden-01.jpg",
+	"/textures/texture-@fakurian-04.avif",
+]
+
 export default function Scene() {
 	const ref = useRef()
 	const ref2 = useRef()
 	const { viewport, size, camera } = useThree()
-	const texture = useLoader(
-		THREE.TextureLoader,
-		"/textures/texture-@tyu25.avif"
-	)
-	const texture2 = useLoader(
-		THREE.TextureLoader,
-		"/textures/stripes-@mrparalloid.avif"
-	)
 
-	useFrame((state, delta) => {
-		if (!ref.current) return
-		const x = state.pointer.x * viewport.width * 0.1
-		const y = state.pointer.y * viewport.height * 0.1
+	const allTextures = useMemo(() => {
+		return useLoader(THREE.TextureLoader, textures)
+	}, [textures])
 
-		ref.current.time += delta
-		easing.damp3(ref.current.pointer, state.pointer, 0.2, delta)
-	})
+	const [activeIndex, setActiveIndex] = useState(0)
 
 	useLayoutEffect(() => {
 		if (!ref.current) return
 
-		const tl = gsap.timeline({ repeat: -1, yoyo: true })
+		const tl = gsap.timeline({
+			onComplete: () => {
+				// Increment the texture index and loop around if necessary
+				setActiveIndex((prev) => (prev + 1) % allTextures.length)
+				tl.restart() // Restart the animation
+			},
+		})
 
-		tl.to(ref.current.uniforms.uProgress, {
-			value: 0.6,
-			duration: 3,
+		tl.to(ref.current.uniforms.uAlpha, {
+			value: 1,
+			duration: 1,
 			ease: "power2.inOut",
-		}).to(
-			ref.current.uniforms.uAlpha,
-			{
-				value: 0.0,
+		})
+			.to(ref.current.uniforms.uProgress, {
+				value: 0.6,
 				duration: 3,
 				ease: "power2.inOut",
-			},
-			"<"
-		)
-	}, [ref])
+			})
+			.to(
+				ref.current.uniforms.uAlpha,
+				{
+					value: 0.0,
+					duration: 3,
+					ease: "power2.inOut",
+				},
+				"<"
+			)
+	}, [ref, allTextures])
 
 	return (
 		<>
@@ -56,9 +64,9 @@ export default function Scene() {
 					ref={ref}
 					key={CurtainMaterial.key}
 					resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
-					uTexture={texture}
+					uTexture={allTextures[activeIndex % allTextures.length]} // Ensure looping of textures
 					uProgress={0}
-					uAlpha={1}
+					uAlpha={0}
 					transparent
 				/>
 			</mesh>
