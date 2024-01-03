@@ -1,63 +1,80 @@
 import * as THREE from "three"
-import React, { forwardRef, useMemo } from "react"
-import { Uniform } from "three"
-import { Effect } from "postprocessing"
-import { useThree, useFrame } from "@react-three/fiber"
+import { useRef, useState } from "react"
+import { Canvas, extend, useFrame } from "@react-three/fiber"
+import { useTexture, shaderMaterial } from "@react-three/drei"
 
-const fragmentShader = `
-uniform float time;
-uniform vec2 resolution;
-uniform sampler2D texture;
-
-void main() {
-    vec2 uv = gl_FragCoord.xy / resolution.xy;
-    uv.x += 0.1 * sin(uv.y * 10.0 + time);
-    uv.y += 0.1 * cos(uv.x * 10.0 + time);
-    vec3 color = texture2D(texture, uv).rgb;
-    gl_FragColor = vec4(color, 1.0);
-}
-`
-
-// Effect implementation
-class MyCustomEffectImpl extends Effect {
-	constructor(
-		texture,
-		{ time = 0, resolution = [window.innerWidth, window.innerHeight] } = {}
-	) {
-		super("MyCustomEffect", fragmentShader, {
-			uniforms: new Map([
-				["time", new Uniform(time)],
-				["resolution", new Uniform(new THREE.Vector2(...resolution))],
-				["texture", new Uniform(texture)],
-			]),
-		})
-	}
-
-	setTime(time) {
-		this.uniforms.get("time").value = time
-	}
-}
-
-type MyCustomEffectProps = {
-	texture: THREE.Texture
-}
-
-// Effect component
-export const CustomPostProcessing = forwardRef(
-	({ texture }: MyCustomEffectProps, ref) => {
-		const { size } = useThree()
-		const effect = useMemo(
-			() =>
-				new MyCustomEffectImpl(texture, {
-					resolution: [size.width, size.height],
-				}),
-			[texture, size]
-		)
-
-		useFrame(({ clock }) => {
-			effect.setTime(clock.getElapsedTime())
-		})
-
-		return <primitive ref={ref} object={effect} dispose={null} />
-	}
+export const ImageFadeMaterial = shaderMaterial(
+	{
+		effectFactor: 1.2,
+		dispFactor: 0,
+		tex: undefined,
+		tex2: undefined,
+		disp: undefined,
+	},
+	` varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    }`,
+	` varying vec2 vUv;
+    uniform sampler2D tex;
+    uniform sampler2D tex2;
+    uniform sampler2D disp;
+    uniform float _rot;
+    uniform float dispFactor;
+    uniform float effectFactor;
+    void main() {
+      vec2 uv = vUv;
+      vec4 disp = texture2D(disp, uv);
+      vec2 distortedPosition = vec2(uv.x + dispFactor * (disp.r*effectFactor), uv.y);
+      vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (disp.r*effectFactor), uv.y);
+      vec4 _texture = texture2D(tex, distortedPosition);
+      vec4 _texture2 = texture2D(tex2, distortedPosition2);
+      vec4 finalTexture = mix(_texture, _texture2, dispFactor);
+      gl_FragColor = finalTexture;
+      #include <tonemapping_fragment>
+      #include <encodings_fragment>
+    }`
 )
+
+extend({ ImageFadeMaterial })
+
+export default function CustomPostProcessing() {
+	const ref = useRef()
+	const [texture1, texture2, dispTexture] = useTexture([
+		"/1.jpg",
+		"/6.jpg",
+		"/displacement/13.jpg",
+	])
+	const [hovered, setHover] = useState(false)
+	useFrame(() => {
+		ref.current.dispFactor = THREE.MathUtils.lerp(
+			ref.current.dispFactor,
+			hovered ? 1 : 0,
+			0.075
+		)
+	})
+	return (
+		<mesh
+			onPointerOver={(e) => setHover(true)}
+			onPointerOut={(e) => setHover(false)}
+		>
+			<planeGeometry />
+			<imageFadeMaterial
+				ref={ref}
+				tex={texture1}
+				tex2={texture2}
+				disp={dispTexture}
+				toneMapped={false}
+			/>
+		</mesh>
+	)
+}
+
+// export default function App() {
+// 	return (
+// 		<Canvas camera={{ position: [0, 0, 2], fov: 50 }}>
+// 			<FadingImage />
+// 		</Canvas>
+// 	)
+// }

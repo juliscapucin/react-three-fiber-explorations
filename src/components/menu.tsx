@@ -21,6 +21,7 @@ const menu = [
 	{ name: "17. Mask", path: "/17-mask" },
 	{ name: "18. Post Processing", path: "/18-post-processing" },
 	{ name: "19. Custom Post Processing", path: "/19-custom-post-processing" },
+	{ name: "20. Custom Post Processing", path: "/20-custom-post-processing" },
 ]
 
 export default function Menu() {

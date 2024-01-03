@@ -1,6 +1,6 @@
 import CameraControl from "./cameraControl"
 import CustomGeometry from "./customGeometry"
-import { CustomPostProcessing } from "./customPostProcessing"
+import CustomPostProcessing from "./customPostProcessing"
 import FollowMouseCube from "./followMouseCube"
 import Images from "./images"
 import Loader from "./loader"
