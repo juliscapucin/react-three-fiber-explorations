@@ -31,7 +31,7 @@ export default function Scene() {
 			onComplete: () => {
 				// Increment the texture index and loop around if necessary
 				setActiveIndex((prev) => (prev + 1) % allTextures.length)
-				tl.restart() // Restart the animation
+				tl.restart()
 			},
 		})
 

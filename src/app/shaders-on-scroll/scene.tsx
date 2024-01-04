@@ -7,9 +7,9 @@ import * as THREE from "three"
 import gsap from "gsap"
 
 const textures = [
-	"/textures/texture-@fakurian-01.avif",
-	"/textures/texture-@phillbrown-01.avif",
-	"/textures/architecture-@andersjilden-01.jpg",
+	"/textures/texture-@tyu25.jpg",
+	"/textures/texture-@pawel_czerwinski-01.jpg",
+	"/textures/texture-@pawel_czerwinski-02.jpg",
 	"/textures/texture-@fakurian-04.avif",
 ]
 
@@ -22,54 +22,46 @@ export default function Scene() {
 		return useLoader(THREE.TextureLoader, textures)
 	}, [textures])
 
-	const [activeIndex, setActiveIndex] = useState(0)
-
 	useLayoutEffect(() => {
-		if (!ref.current) return
+		let activeIndex = 0
+		let positionX = 0
 
-		const tl = gsap.timeline({
-			onComplete: () => {
-				// Increment the texture index and loop around if necessary
-				setActiveIndex((prev) => (prev + 1) % allTextures.length)
-				tl.restart() // Restart the animation
-			},
-		})
+		const tl = gsap.timeline()
 
-		tl.to(ref.current.uniforms.uAlpha, {
-			value: 1,
-			duration: 1,
-			ease: "power2.inOut",
+		tl.to(camera.position, {
+			x: viewport.width * (textures.length - 1),
+			duration: textures.length - 1,
+			ease: "none",
 		})
-			.to(ref.current.uniforms.uProgress, {
-				value: 0.6,
-				duration: 3,
-				ease: "power2.inOut",
-			})
-			.to(
-				ref.current.uniforms.uAlpha,
-				{
-					value: 0.0,
-					duration: 3,
-					ease: "power2.inOut",
-				},
-				"<"
-			)
-	}, [ref, allTextures])
+	}, [allTextures])
 
 	return (
 		<>
-			<mesh scale={[viewport.width, viewport.height, 1]} position={[0, 0, 0]}>
-				<planeGeometry />
-				<curtainMaterial
-					ref={ref}
-					key={CurtainMaterial.key}
-					resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
-					uTexture={allTextures[activeIndex % allTextures.length]} // Ensure looping of textures
-					uProgress={0}
-					uAlpha={0}
-					transparent
-				/>
-			</mesh>
+			{allTextures.map((texture, index) => {
+				const positionX = viewport.width * index
+
+				return (
+					<mesh
+						key={`shaders-on-scroll-${index}`}
+						scale={[viewport.width, viewport.height, 1]}
+						position={[positionX, 0, 0]}
+					>
+						<planeGeometry />
+						<curtainMaterial
+							ref={ref}
+							key={CurtainMaterial.key}
+							resolution={[
+								size.width * viewport.dpr,
+								size.height * viewport.dpr,
+							]}
+							uTexture={allTextures[index]}
+							uProgress={0}
+							uAlpha={1}
+							transparent
+						/>
+					</mesh>
+				)
+			})}
 		</>
 	)
 }
