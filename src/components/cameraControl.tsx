@@ -48,6 +48,7 @@ export default function CameraControl() {
 	})
 	return (
 		<>
+			<CameraControls ref={cameraControlRef} />
 			<Grid
 				args={[30, 30]}
 				cellSize={0.25}

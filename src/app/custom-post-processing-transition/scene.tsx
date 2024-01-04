@@ -46,52 +46,13 @@ export default function Scene() {
 	const ref = useRef()
 	const refBg = useRef()
 	const [texture1, texture2, dispTexture] = useTexture([
-		"/pixelated@paulina_milde_jachowska-01.avif",
-		"/pixelated@paulina_milde_jachowska-02.avif",
+		"/pixelated-@jontyson.avif",
+		"/pixelated@designedbyflores.avif",
 		"/displacement/15.jpg",
 	])
 
 	const [hovered, setHover] = useState(false)
 	useCursor(hovered ? true : false)
-
-	const makeGrayscale = (texture) => {
-		const width = texture.image.width
-		const height = texture.image.height
-
-		const canvas = document.createElement("canvas")
-		canvas.width = width
-		canvas.height = height
-
-		const ctx = canvas.getContext("2d")
-		ctx.drawImage(texture.image, 0, 0, width, height)
-
-		const imageData = ctx.getImageData(0, 0, width, height)
-		const data = imageData.data
-
-		for (let i = 0; i < data.length; i += 4) {
-			const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
-			data[i] = avg // red
-			data[i + 1] = avg // green
-			data[i + 2] = avg // blue
-		}
-
-		ctx.putImageData(imageData, 0, 0)
-		return new THREE.Texture(canvas)
-	}
-
-	useEffect(() => {
-		if (texture1 && texture2) {
-			const textures = [texture1, texture2]
-			const grayTextures = textures.map((texture) => {
-				const grayTexture = makeGrayscale(texture)
-				grayTexture.needsUpdate = true
-				return grayTexture
-			})
-
-			refBg.current.tex = grayTextures[0]
-			refBg.current.tex2 = grayTextures[1]
-		}
-	}, [texture1, texture2])
 
 	useFrame(() => {
 		if (!ref.current || !refBg.current) return

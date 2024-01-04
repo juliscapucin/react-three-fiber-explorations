@@ -15,26 +15,13 @@ const menu = [
 	{ name: "11. Html", path: "/11-html" },
 	{ name: "12. Shaders", path: "/12-shaders" },
 	{ name: "13. Lerp", path: "/13-lerp" },
-	{ name: "14. Ascii", path: "/ascii" },
-	{ name: "15. Look at Mouse", path: "/look-at-mouse" },
-	{ name: "16. Custom Geometry", path: "/custom-geometry" },
-	{ name: "17. Mask", path: "/mask" },
-	{ name: "18. Post Processing", path: "/post-processing" },
-	{
-		name: "19. Custom Post Processing",
-		path: "/custom-post-processing-transition",
-	},
-	{
-		name: "20. Custom Post Processing",
-		path: "/custom-post-processing-curtain",
-	},
 ]
 
 export default function MenuDev() {
 	const pathname = usePathname()
 
 	return (
-		<div className='absolute top-8 left-8 z-50 flex flex-col items-start gap-1 pointer-events-auto'>
+		<div className='absolute top-8 right-8 z-50 flex flex-col items-start gap-1 pointer-events-auto'>
 			{menu.map(({ name, path }) => (
 				<Link
 					href={path}

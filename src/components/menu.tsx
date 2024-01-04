@@ -14,6 +14,7 @@ const menu = [
 		name: "06. Custom Post Processing – Curtain",
 		path: "/custom-post-processing-curtain",
 	},
+	{ name: "07. Shaders on Scroll", path: "/shaders-on-scroll" },
 ]
 
 export default function Menu() {

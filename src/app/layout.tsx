@@ -33,8 +33,8 @@ function Overlay() {
 				<br />
 				<span className='bg-colorBlack'>Creative Developer</span>
 			</a>
-			{/* <Menu /> */}
 			<MenuDev />
+			<Menu />
 			<div className='absolute bottom-8 right-8 bg-colorBlack'>
 				December 2023
 			</div>
