@@ -39,17 +39,17 @@ export default function Scene() {
 		})
 
 		tl.to(camera.position, {
-			x: viewport.width * index,
-			duration: 1,
-			ease: "none",
+			x: viewport.width * (index + 1 < allTextures.length ? index + 1 : index),
+			duration: 3,
+			ease: "power4.inOut",
 		}).to(
 			activeMaterial,
 			{
 				value: 0.6,
-				duration: 1,
-				ease: "power2.inOut",
+				duration: 2.5,
+				ease: "power4.inOut",
 			},
-			"+=0.5"
+			"0"
 		)
 	}, [allTextures, groupRef, index])
 

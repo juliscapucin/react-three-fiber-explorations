@@ -61,22 +61,20 @@ const CurtainMaterial = shaderMaterial(
         vec2 uv = vUv;
 
         // Displacement effect
-        if(uv.x < 0.15){
-
-        } else if(uv.x < 0.3){
-          uv.x = uv.x - 0.15 * uProgress;
-        } else if(uv.x < 0.45){
-          uv.x = uv.x - 0.30 * uProgress;
-        } else if(uv.x < 0.6){
-          uv.x = uv.x - 0.45 * uProgress;
-        } else if(uv.x < 0.75){
-          uv.x = uv.x - 0.60 * uProgress;
-        } else if(uv.x < 0.9){
-          uv.x = uv.x - 0.75 * uProgress;
-        } else if(uv.x < 1.05){
-          uv.x = uv.x - 0.90 * uProgress;
+        if (uv.x > 0.85) {
+          uv.x = uv.x + (0.15 + uv.x) * uProgress;
+        } else if (uv.x > 0.75) {
+          uv.x = uv.x + (0.30 + uv.x) * uProgress;
+        } else if (uv.x > 0.6) {
+          uv.x = uv.x + (0.45 + uv.x) * uProgress;
+        } else if (uv.x > 0.45) {
+          uv.x = uv.x + (0.60 + uv.x) * uProgress;
+        } else if (uv.x > 0.3) {
+          uv.x = uv.x + (0.75 + uv.x) * uProgress;
+        } else if (uv.x > 0.15) {
+          uv.x = uv.x + (0.90 + uv.x) * uProgress;
         } else {
-          uv.x = uv.x - 1.05 * uProgress;
+          uv.x = uv.x + (1.05 + uv.x) * uProgress;
         }
 
         vec2 displacedUV = uv;
