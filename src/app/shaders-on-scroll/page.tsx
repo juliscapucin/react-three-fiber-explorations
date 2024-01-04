@@ -6,11 +6,9 @@ import Scene from "./scene"
 const page = () => {
 	return (
 		<section className='h-full bg-colorBlack overflow-clip'>
-			<div className='h-full transition-transform duration-[2s]'>
-				<Canvas camera={{ position: [0, 0, 2] }}>
-					<Scene />
-				</Canvas>
-			</div>
+			<Canvas camera={{ position: [0, 0, 2] }}>
+				<Scene />
+			</Canvas>
 		</section>
 	)
 }

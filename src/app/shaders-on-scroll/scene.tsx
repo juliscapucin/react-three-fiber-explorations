@@ -14,8 +14,9 @@ const textures = [
 ]
 
 export default function Scene() {
-	const ref = useRef()
-	const ref2 = useRef()
+	const [index, setIndex] = useState(0)
+	const materialRef = useRef()
+	const groupRef = useRef<THREE.Group>(null)
 	const { viewport, size, camera } = useThree()
 
 	const allTextures = useMemo(() => {
@@ -23,20 +24,37 @@ export default function Scene() {
 	}, [textures])
 
 	useLayoutEffect(() => {
-		let activeIndex = 0
-		let positionX = 0
+		if (!groupRef.current) return
 
-		const tl = gsap.timeline()
+		const activeMaterial =
+			groupRef.current.children[index].material.uniforms.uProgress
+
+		const tl = gsap.timeline({
+			onComplete: () => {
+				setIndex((prev) => {
+					if (prev + 1 < allTextures.length) return prev + 1
+					else return prev
+				})
+			},
+		})
 
 		tl.to(camera.position, {
-			x: viewport.width * (textures.length - 1),
-			duration: textures.length - 1,
+			x: viewport.width * index,
+			duration: 1,
 			ease: "none",
-		})
-	}, [allTextures])
+		}).to(
+			activeMaterial,
+			{
+				value: 0.6,
+				duration: 1,
+				ease: "power2.inOut",
+			},
+			"+=0.5"
+		)
+	}, [allTextures, groupRef, index])
 
 	return (
-		<>
+		<group ref={groupRef}>
 			{allTextures.map((texture, index) => {
 				const positionX = viewport.width * index
 
@@ -48,13 +66,12 @@ export default function Scene() {
 					>
 						<planeGeometry />
 						<curtainMaterial
-							ref={ref}
 							key={CurtainMaterial.key}
 							resolution={[
 								size.width * viewport.dpr,
 								size.height * viewport.dpr,
 							]}
-							uTexture={allTextures[index]}
+							uTexture={texture}
 							uProgress={0}
 							uAlpha={1}
 							transparent
@@ -62,6 +79,6 @@ export default function Scene() {
 					</mesh>
 				)
 			})}
-		</>
+		</group>
 	)
 }
