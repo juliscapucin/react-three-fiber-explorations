@@ -30,3 +30,7 @@ body,
   white-space: nowrap;
 }
 
+h1{
+  font-size: 12rem;
+  text-transform: uppercase;
+}

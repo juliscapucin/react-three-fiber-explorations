@@ -18,7 +18,7 @@ export default function ScrollControl() {
 					<Images />
 				</Scroll>
 				<Scroll html>
-					<div className='fixed top-0 left-0'>
+					<div>
 						<h1 className='text-9xl'>Juli Scapucin</h1>
 						<h1 className='text-9xl'>Amsterdam</h1>
 						<h1 className='text-9xl'>Chritsmas</h1>
