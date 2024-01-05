@@ -1,10 +1,24 @@
 "use client"
 
 // import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 import "./globals.css"
+import { Menu, MenuDev } from "@/components"
 
-const inter = Inter({ subsets: ["latin"] })
+// Load custom font //
+const font = localFont({
+	variable: "--font-primary",
+	src: [
+		{
+			path: "../../public/fonts/PPSupplySans-Regular.otf",
+			weight: "400",
+		},
+		{
+			path: "../../public/fonts/PPSupplySans-Ultralight.otf",
+			weight: "200",
+		},
+	],
+})
 
 // export const metadata: Metadata = {
 // 	title: "Create Next App",
@@ -13,38 +27,16 @@ const inter = Inter({ subsets: ["latin"] })
 
 function Overlay() {
 	return (
-		<div
-			style={{
-				position: "absolute",
-				top: 0,
-				left: 0,
-				pointerEvents: "none",
-				width: "100%",
-				height: "100%",
-			}}
-		>
-			<a
-				href='https://pmnd.rs/'
-				style={{ position: "absolute", bottom: 40, left: 90, fontSize: "13px" }}
-			>
-				pmnd.rs
+		<div className='absolute top-0 left-0 z-50 w-full h-full pointer-events-none'>
+			<a href='https://juliscapucin.com/' className='absolute left-8 bottom-8'>
+				<span className='bg-colorBlack'>Juli Scapucin</span>
 				<br />
-				dev collective
+				<span className='bg-colorBlack'>Creative Developer</span>
 			</a>
-			<div
-				style={{ position: "absolute", top: 40, left: 40, fontSize: "13px" }}
-			>
-				bad —
-			</div>
-			<div
-				style={{
-					position: "absolute",
-					bottom: 40,
-					right: 40,
-					fontSize: "13px",
-				}}
-			>
-				10/17/2021
+			<MenuDev />
+			<Menu />
+			<div className='absolute bottom-8 right-8 bg-colorBlack'>
+				December 2023
 			</div>
 		</div>
 	)
@@ -57,8 +49,11 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
-				{children} <Overlay />
+			<body
+				className={`${font.className} font-light text-colorGreen bg-colorBlack`}
+			>
+				{children}
+				<Overlay />
 			</body>
 		</html>
 	)
