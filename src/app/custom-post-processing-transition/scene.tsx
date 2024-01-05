@@ -1,15 +1,35 @@
 import * as THREE from "three"
-import { useEffect, useRef, useState } from "react"
-import { Canvas, extend, useFrame, useThree } from "@react-three/fiber"
+import { useRef, useState } from "react"
+import { ReactThreeFiber, extend, useFrame, useThree } from "@react-three/fiber"
 import { useTexture, shaderMaterial, useCursor } from "@react-three/drei"
+
+interface ImageFadeMaterialProps {
+	disp: THREE.Texture
+	tex: THREE.Texture
+	tex2: THREE.Texture
+	effectFactor: number
+	dispFactor: number
+}
+
+declare global {
+	namespace JSX {
+		interface IntrinsicElements {
+			imageFadeMaterial: ReactThreeFiber.Object3DNode<
+				THREE.ShaderMaterial,
+				typeof THREE.ShaderMaterial
+			> &
+				ImageFadeMaterialProps
+		}
+	}
+}
 
 export const ImageFadeMaterial = shaderMaterial(
 	{
 		effectFactor: 1.2,
 		dispFactor: 0,
-		tex: undefined,
-		tex2: undefined,
-		disp: undefined,
+		tex: new THREE.Texture(),
+		tex2: new THREE.Texture(),
+		disp: new THREE.Texture(),
 	},
 	` varying vec2 vUv;
     void main() {
@@ -43,8 +63,8 @@ extend({ ImageFadeMaterial })
 
 export default function Scene() {
 	const { viewport } = useThree()
-	const ref = useRef()
-	const refBg = useRef()
+	const ref = useRef<THREE.ShaderMaterial & { dispFactor?: number }>(null)
+	const refBg = useRef<THREE.ShaderMaterial & { dispFactor?: number }>(null)
 	const [texture1, texture2, dispTexture] = useTexture([
 		"/pixelated@paulina_milde_jachowska-01.avif",
 		"/pixelated@paulina_milde_jachowska-02.avif",
@@ -55,7 +75,7 @@ export default function Scene() {
 	useCursor(hovered ? true : false)
 
 	useFrame(() => {
-		if (!ref.current || !refBg.current) return
+		if (!ref.current || !refBg.current || !ref.current.dispFactor) return
 		ref.current.dispFactor = THREE.MathUtils.lerp(
 			ref.current.dispFactor,
 			hovered ? 1 : 0,
@@ -82,6 +102,8 @@ export default function Scene() {
 					tex2={texture2}
 					disp={dispTexture}
 					toneMapped={false}
+					dispFactor={0}
+					effectFactor={0}
 				/>
 			</mesh>
 			<mesh
@@ -97,6 +119,8 @@ export default function Scene() {
 					tex2={texture1}
 					disp={dispTexture}
 					toneMapped={false}
+					dispFactor={0}
+					effectFactor={0}
 				/>
 			</mesh>
 		</>
