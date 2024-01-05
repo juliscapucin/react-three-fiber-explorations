@@ -104,7 +104,8 @@ function Typography() {
 				position={[width / 2.5, -height * 2, 12]}
 				// {...shared}
 			/>
-			<Text children='home' position={[0, -height * 4.624, 12]} {...shared} />
+			<Text children='home' position={[0, -height * 4.624, 12]} />
+			{/* <Text children='home' position={[0, -height * 4.624, 12]} {...shared} /> */}
 		</>
 	)
 }

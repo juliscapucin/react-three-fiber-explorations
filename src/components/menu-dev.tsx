@@ -8,7 +8,6 @@ const menu = [
 	{ name: "04. Events / Light / Shadow", path: "/04-events-light-shadow" },
 	{ name: "05. Sparkles", path: "/05-sparkles" },
 	{ name: "06. Camera", path: "/06-camera" },
-	{ name: "07. Scroll Control", path: "/07-scroll-control" },
 	{ name: "08. Transform Control", path: "/08-transform-control" },
 	{ name: "09. Pivot Control", path: "/09-pivot-control" },
 	{ name: "10. Text", path: "/10-text" },

@@ -17,6 +17,7 @@ const menu = [
 	{ name: "07. Shaders on Scroll", path: "/shaders-on-scroll" },
 	{ name: "08. Scroll", path: "/scroll" },
 	{ name: "09. Horizontal Scroll", path: "/scroll-horizontal" },
+	{ name: "10. Infinite Vertical Scroll", path: "/infinite-vertical-scroll" },
 ]
 
 export default function Menu() {

@@ -36,10 +36,10 @@ export default function Images() {
 
 	return (
 		<group ref={imagesRef}>
-			<group>
-				<Image url='/3.jpg' scale={[5, 5]} position={[0, 0, 0]} />
-				<Html>Project 1</Html>
-			</group>
+			<Image url='/5.jpg' scale={[5, 5]} position={[-9, height * 3, -3]} />
+			<Image url='/6.jpg' scale={[5, 5]} position={[7, height * 2, -2]} />
+			<Image url='/9.jpg' scale={[5, 5]} position={[-4, height, -2]} />
+			<Image url='/3.jpg' scale={[5, 5]} position={[0, 0, 0]} />
 			{/* <Image
 				url='/4.jpg'
 				scale={[5, 5]}
@@ -47,11 +47,11 @@ export default function Images() {
 				grayscale={1}
 				zoom={1}
 			/> */}
-			<Image url='/5.jpg' scale={[5, 5]} position={[-9, -height * 1.2, -3]} />
-			<Image url='/6.jpg' scale={[5, 5]} position={[7, -height * 1.2, -2]} />
-			{/* <Image url='/7.jpg' scale={[5, 5]} position={[-4, -height * 2, -2]} />
-			<Image url='/8.jpg' scale={[5, 5]} position={[5, -height * 2, -1]} />
-			<Image url='/3.jpg' scale={[5, 5]} position={[0, -height * 3, 0]} /> */}
+			<Image url='/5.jpg' scale={[5, 5]} position={[-9, -height, -3]} />
+			<Image url='/6.jpg' scale={[5, 5]} position={[7, -height * 2, -2]} />
+			<Image url='/9.jpg' scale={[5, 5]} position={[-4, -height * 3, -2]} />
+			<Image url='/3.jpg' scale={[5, 5]} position={[0, -height * 4, 0]} />
+			<Image url='/5.jpg' scale={[5, 5]} position={[-9, -height * 5, -3]} />
 		</group>
 	)
 }

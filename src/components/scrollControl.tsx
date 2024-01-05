@@ -12,19 +12,19 @@ export default function ScrollControl() {
 		<>
 			<ambientLight intensity={5} />
 			<directionalLight />
-			<ScrollControls pages={4} damping={0.2} infinite>
+			<ScrollControls pages={5} damping={0.2} distance={2} infinite>
 				<Scroll>
 					{/* <primitive object={scene} scale={0.5} /> */}
 					<Images />
 				</Scroll>
-				<Scroll html>
+				{/* <Scroll html>
 					<div>
 						<h1 className='text-9xl'>Juli Scapucin</h1>
 						<h1 className='text-9xl'>Amsterdam</h1>
 						<h1 className='text-9xl'>Chritsmas</h1>
 						<h1 className='text-9xl'>2024</h1>
 					</div>
-				</Scroll>
+				</Scroll> */}
 			</ScrollControls>
 		</>
 	)
