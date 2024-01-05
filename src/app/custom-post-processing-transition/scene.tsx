@@ -46,7 +46,7 @@ export default function Scene() {
 	const ref = useRef()
 	const refBg = useRef()
 	const [texture1, texture2, dispTexture] = useTexture([
-		"/pixelated-@jontyson.avif",
+		"/pixelated-@scottrodgerson.avif",
 		"/pixelated@designedbyflores.avif",
 		"/displacement/15.jpg",
 	])

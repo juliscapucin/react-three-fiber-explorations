@@ -7,9 +7,9 @@ import * as THREE from "three"
 import gsap from "gsap"
 
 const textures = [
-	"/textures/texture-@fakurian-01.avif",
-	"/textures/texture-@phillbrown-01.avif",
-	"/textures/architecture-@andersjilden-01.jpg",
+	"/textures/texture-@tyu25.jpg",
+	"/textures/texture-@pawel_czerwinski-01.jpg",
+	"/textures/texture-@pawel_czerwinski-02.jpg",
 	"/textures/texture-@fakurian-04.avif",
 ]
 
