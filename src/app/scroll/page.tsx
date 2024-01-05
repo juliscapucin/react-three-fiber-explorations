@@ -93,18 +93,20 @@ function Typography() {
 	return (
 		<>
 			<Text
-				children='to'
 				anchorX='left'
 				position={[-width / 2.5, -height / 10, 12]}
 				// {...shared}
-			/>
+			>
+				to
+			</Text>
 			<Text
-				children='be'
 				anchorX='right'
 				position={[width / 2.5, -height * 2, 12]}
 				// {...shared}
-			/>
-			<Text children='home' position={[0, -height * 4.624, 12]} />
+			>
+				be
+			</Text>
+			<Text position={[0, -height * 4.624, 12]}>home</Text>
 			{/* <Text children='home' position={[0, -height * 4.624, 12]} {...shared} /> */}
 		</>
 	)

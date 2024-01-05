@@ -1,7 +1,6 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react"
-import { useFrame, useLoader, useThree } from "@react-three/fiber"
+import { useLayoutEffect, useRef, useState } from "react"
+import { ReactThreeFiber, useLoader, useThree } from "@react-three/fiber"
 import { CurtainMaterial } from "./CurtainMaterial"
-import { easing } from "maath"
 import * as THREE from "three"
 
 import gsap from "gsap"
@@ -13,14 +12,30 @@ const textures = [
 	"/textures/texture-@fakurian-04.avif",
 ]
 
-export default function Scene() {
-	const ref = useRef()
-	const ref2 = useRef()
-	const { viewport, size, camera } = useThree()
+interface CurtainMaterialProps {
+	uTexture: THREE.Texture
+	uProgress: number
+	uAlpha: number
+	resolution: number[]
+}
 
-	const allTextures = useMemo(() => {
-		return useLoader(THREE.TextureLoader, textures)
-	}, [textures])
+declare global {
+	namespace JSX {
+		interface IntrinsicElements {
+			curtainMaterial: ReactThreeFiber.Object3DNode<
+				THREE.ShaderMaterial,
+				typeof THREE.ShaderMaterial
+			> &
+				CurtainMaterialProps
+		}
+	}
+}
+
+export default function Scene() {
+	const ref = useRef<THREE.ShaderMaterial>(null)
+	const { viewport, size } = useThree()
+
+	const allTextures = useLoader(THREE.TextureLoader, textures)
 
 	const [activeIndex, setActiveIndex] = useState(0)
 

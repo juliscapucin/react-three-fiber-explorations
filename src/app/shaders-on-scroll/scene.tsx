@@ -19,9 +19,7 @@ export default function Scene() {
 	const groupRef = useRef<THREE.Group>(null)
 	const { viewport, size, camera } = useThree()
 
-	const allTextures = useMemo(() => {
-		return useLoader(THREE.TextureLoader, textures)
-	}, [textures])
+	const allTextures = useLoader(THREE.TextureLoader, textures)
 
 	useLayoutEffect(() => {
 		if (!groupRef.current) return
