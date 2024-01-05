@@ -1,5 +1,10 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react"
-import { useFrame, useLoader, useThree } from "@react-three/fiber"
+import {
+	ReactThreeFiber,
+	useFrame,
+	useLoader,
+	useThree,
+} from "@react-three/fiber"
 import { CurtainMaterial } from "./CurtainMaterial"
 import { easing } from "maath"
 import * as THREE from "three"
@@ -24,8 +29,10 @@ export default function Scene() {
 	useLayoutEffect(() => {
 		if (!groupRef.current) return
 
-		const activeMaterial =
-			groupRef.current.children[index].material.uniforms.uProgress
+		const activeMaterial = (
+			(groupRef.current.children[index] as THREE.Mesh)
+				.material as THREE.ShaderMaterial
+		).uniforms.uProgress
 
 		const tl = gsap.timeline({
 			onComplete: () => {

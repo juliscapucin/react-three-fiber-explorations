@@ -1,6 +1,5 @@
 import CameraControl from "./cameraControl"
 import CustomGeometry from "./customGeometry"
-import CustomPostProcessing from "./customPostProcessing"
 import FollowMouseCube from "./followMouseCube"
 import Images from "./images"
 import Loader from "./loader"
@@ -22,7 +21,6 @@ import TransformControl from "./transformControl"
 export {
 	CameraControl,
 	CustomGeometry,
-	CustomPostProcessing,
 	FollowMouseCube,
 	Images,
 	Loader,
