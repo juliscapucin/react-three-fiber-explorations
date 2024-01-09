@@ -29,15 +29,11 @@ function Overlay() {
 	return (
 		<div className='absolute top-0 left-0 z-50 w-full h-full pointer-events-none'>
 			<a href='https://juliscapucin.com/' className='absolute left-8 bottom-8'>
-				<span className='bg-colorBlack'>Juli Scapucin</span>
+				<span className='bg-colorBlack'>JULI SCAPUCIN</span>
 				<br />
-				<span className='bg-colorBlack'>Creative Developer</span>
+				<span className='bg-colorBlack'>CREATIVE DEVELOPER</span>
 			</a>
-			<MenuDev />
-			<Menu />
-			<div className='absolute bottom-8 right-8 bg-colorBlack'>
-				December 2023
-			</div>
+			<div className='absolute bottom-8 right-8 bg-colorBlack'>2023/2024</div>
 		</div>
 	)
 }
