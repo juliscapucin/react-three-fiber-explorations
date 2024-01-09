@@ -1,4 +1,6 @@
-// "use client"
+"use client"
+
+import { Menu, MenuDev } from "@/components"
 
 // // Code from
 // // https://codesandbox.io/p/sandbox/horizontal-tiles-l4klb?file=%2Fsrc%2FApp.js%3A38%2C1
@@ -146,7 +148,14 @@
 // 	)
 // }
 
-const page = () => <h1>hello</h1>
+const page = () => (
+	<>
+		<div>
+			<Menu />
+			<MenuDev />
+		</div>
+	</>
+)
 // const page = () => (
 // 	<Canvas
 // 		gl={{ antialias: false }}
